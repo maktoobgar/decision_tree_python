@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- 🎉 feat: added entropy
 - 🎉 feat: initial commit
 <!-- ## [0.0.2] - 2022-12-07
 
