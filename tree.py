@@ -14,15 +14,16 @@ class Decision:
         self.outputs = outputs
         self.attribute = attribute
         self.length = np.sum([len(output) for output in outputs])
+        self.__entropy()
 
-    def entropy(self) -> None:
+    def __entropy(self) -> None:
         each_side_entropies = []
         for outputs in self.outputs:
             proabilities = np.unique(outputs, return_counts=True)[1] / len(outputs)
             each_side_entropies.append(
                 np.sum([p * np.log2(1 / p) for p in proabilities])
             )
-        return np.sum(
+        self.entropy = np.sum(
             [
                 each_side_entropies[i] * len(self.outputs[i]) / self.length
                 for i in range(len(each_side_entropies))
