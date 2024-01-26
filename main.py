@@ -1,11 +1,11 @@
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
-from tree import *
+from tree import train_tree
 
 data_iris = load_iris()
 data, target = data_iris.data, data_iris.target
 train, test, train_output, test_output = train_test_split(
-    data, target, test_size=0.4, random_state=45449
+    data, target, test_size=0.4, random_state=44
 )
 
 

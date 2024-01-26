@@ -15,11 +15,11 @@ Colors = [Green, Blue, Purple, Cyan, Orange, Gray, Yellow]
 
 
 class Decision:
-    splits = None
-    outputs = None
+    splits = []
+    outputs = []
     middle = 0.0
-    attr = None
-    entropy = None
+    attr = 0
+    entropy = 0.0
     length: int = 0
 
     def __init__(self, splits, outputs, attr, middle):
@@ -67,7 +67,7 @@ class Node:
         self.inputs = inputs
         self.outputs = outputs
 
-    def best_decision(self, decisions) -> Decision:
+    def best_decision(self, decisions: []) -> Decision:
         min_entropy = None
         for i in range(len(decisions)):
             if min_entropy == None or decisions[i].entropy < min_entropy.entropy:
