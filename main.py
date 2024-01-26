@@ -1,10 +1,19 @@
-from tree import Decision
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from tree import *
+
+data_iris = load_iris()
+data, target = data_iris.data, data_iris.target
+train, test, train_output, test_output = train_test_split(
+    data, target, test_size=0.4, random_state=4544
+)
 
 
 def main():
-    aplits = [[7, 8], [1, 2]]
-    outputs = [["+", "-"], ["+", "-"]]
-    decision = Decision(aplits, outputs, 0)
+    tree = train_tree(train, train_output)
+    print(
+        f"Trained on {len(train)} Data.\nTested on {len(test)} Data.\nAccuracy: {round(tree.test(test, test_output), 2)}%"
+    )
 
 
 if __name__ == "__main__":
