@@ -1,5 +1,18 @@
 import numpy as np
 
+Reset = "\033[0m"
+Red = "\033[31m"
+Green = "\033[32m"
+Yellow = "\033[33m"
+Blue = "\033[34m"
+Purple = "\033[35m"
+Cyan = "\033[36m"
+Orange = "\033[33m"
+Gray = "\033[37m"
+White = "\033[97m"
+
+Colors = [Green, Blue, Purple, Cyan, Orange, Gray, Yellow]
+
 
 class Decision:
     splits = None
@@ -43,11 +56,12 @@ class Decision:
 
 
 class Node:
-    data = None
-    outputs = None
-    prediction = None
-    children = []
-    decision = None
+    data: [] = []
+    outputs: [] = []
+    children: [] = []
+    prediction: object = None
+    decision: Decision = None
+    depth: int = 0
 
     def __init__(self, inputs, outputs):
         self.inputs = inputs
@@ -60,7 +74,8 @@ class Node:
                 min_entropy = decisions[i]
         return min_entropy
 
-    def expand(self) -> None:
+    def expand(self, depth: int = 0) -> None:
+        self.depth = depth
         if len(np.unique(self.outputs, return_counts=True)[1]) == 1:
             self.prediction = self.outputs[0]
             return
@@ -83,15 +98,10 @@ class Node:
                 decisions.append(des)
             decision = self.best_decision(decisions)
             attr_decisions.append(decision)
-            print(f"decisions: {decisions}\ninputs: {self.inputs}\n======")
         self.decision = self.best_decision(attr_decisions)
         self.children = self.decision.create_nodes()
-        if self.decision.entropy == 0:
-            for node in self.children:
-                node.prediction = node.outputs[0]
-            return
         for node in self.children:
-            node.expand()
+            node.expand(depth + 1)
 
     def test(self, inputs, outputs) -> float:
         truth = 0
@@ -104,6 +114,12 @@ class Node:
             if node.prediction == output:
                 truth += 1
         return truth / len(inputs) * 100
+
+    def __str__(self) -> str:
+        if len(self.children) > 0:
+            output = f"{Colors[self.depth]} <-- {self.decision.middle} < ({self.depth}-on {self.decision.attr}) <= {self.decision.middle} --> {Reset}"
+            return f"{Colors[self.depth + 1]}({Reset}{self.children[0]}{Colors[self.depth + 1]}){Reset}{output}{Colors[self.depth+1]}({Reset}{self.children[1]}{Colors[self.depth + 1]}){Reset}"
+        return f"{Red}{self.prediction}{Reset}"
 
 
 def train_tree(inputs, outputs) -> Node:

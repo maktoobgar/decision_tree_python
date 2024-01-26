@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- 🎉 feat: tree representation added
 - 🎉 feat: tree completed based on entropy
 - 🎉 feat: added entropy
 - 🎉 feat: initial commit
