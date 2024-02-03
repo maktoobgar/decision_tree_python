@@ -106,14 +106,22 @@ class Node:
     def test(self, inputs, outputs) -> float:
         truth = 0
         for i in range(len(inputs)):
-            input = inputs[i]
             output = outputs[i]
             node = self
             while node.decision:
-                node = node.children[node.decision.next(input)]
+                node = node.children[node.decision.next(inputs[i])]
             if node.prediction == output:
                 truth += 1
         return truth / len(inputs) * 100
+
+    def predict(self, inputs) -> str:
+        predictions = []
+        for i in range(len(inputs)):
+            node = self
+            while node.decision:
+                node = node.children[node.decision.next(inputs[i])]
+            predictions.append(node.prediction)
+        return predictions
 
     def __str__(self) -> str:
         if len(self.children) > 0:
